@@ -1,1 +1,1 @@
-# math.h
+# s21_math.h
