@@ -13,10 +13,10 @@ START_TEST(sqrt_test_1) {
 END_TEST
 
 Suite *suite_s21_sqrt(void) {
-    Suite *s = suite_create("suite_s21_add");
+    Suite *s = suite_create("suite_s21_sqrt");
     TCase *tc = tcase_create("s21_add_tc");
 
-    tcase_add_loop_test(tc, sqrt_test_1, 0, 1000);
+    tcase_add_loop_test(tc, sqrt_test_1, 0, 10000);
 
     suite_add_tcase(s, tc);
     return s;
