@@ -1,8 +1,5 @@
 #include "s21_math.h"
-
 long double s21_asin(double x) {
-    // TODO Move the definition below
-    const long double one_asin = 1.5707963267948966;
     long double res = 0.0;
     s21_bool mod = 0;
 
@@ -10,11 +7,11 @@ long double s21_asin(double x) {
     s21_bool invalid = (is_nan(x) || !is_finite(x));
 
     if (!invalid) {
-        mod = (s21_fabs(x) > 1.0);
-
+        mod = (s21_fabs(x) - 1.0 > EPS);
         if (mod) {
             errno = EDOM;
         } else {
+            const long double one_asin = 1.5707963267948966;
             /* Not sure are we allowed to compare them like that */
             if (s21_ldeq(x, 1.0))
                 res = one_asin;

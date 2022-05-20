@@ -7,7 +7,7 @@ START_TEST(normal) {
 END_TEST
 
 START_TEST(nan_num) {
-    double a = NAN;
+    double a = S21_NAN;
     ck_assert_ldouble_nan(s21_fabs(a));
     ck_assert_ldouble_nan(fabs(a));
 }
@@ -34,7 +34,10 @@ START_TEST(fabs_loop_test_1) {
 }
 END_TEST
 
-START_TEST(not_a_num) { ck_assert_int_eq(s21_fabs(NAN), fabs(NAN)); }
+START_TEST(not_a_num) {
+    ck_assert_ldouble_nan(s21_fabs(NAN));
+    ck_assert_ldouble_nan(fabs(NAN));
+}
 END_TEST
 
 Suite *suite_s21_fabs(void) {

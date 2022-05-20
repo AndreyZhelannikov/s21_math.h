@@ -2,7 +2,7 @@
 #include "s21_math.h"
 
 long double s21_fast_pow(long double base, long long int exp) {
-    long double res;    
+    long double res;
     if (exp >= 0) {
         res = 1;
         while (exp) {
@@ -18,9 +18,7 @@ long double s21_fast_pow(long double base, long long int exp) {
 }
 
 long double s21_pow(double base, double exp) {
-    // TODO REPLACE MATH 2 S21_MATH
-    // TODO Move the definition below
-    long double res;
+    long double res = 0.0;
 
     int b_n = is_nan(base);
     int b_f = is_finite(base);
@@ -31,44 +29,42 @@ long double s21_pow(double base, double exp) {
     // If base is finite and negative and exp is finite and non-integer,
     // a domain error occurs and a range error may occur.
     if (b_f && base < -EPS && e_f && !e_i) {
-        // TODO CHANGE ERROR
         return S21_NAN;
     }
 
     // If base is zero and exp is zero, a domain error may occur.
     if (fabs(base) < EPS && fabs(exp) < EPS) {
-        // TODO CHANGE ERROR
-        printf("2 \n");
         return S21_NAN;
     }
 
-    // If base is zero and exp is negative, a domain error or a pole error may occur.
+    // If base is zero and exp is negative, a domain error or a pole error may
+    // occur.
     if (fabs(base) < EPS && exp < -EPS) {
-        // TODO CHANGE ERROR
         return S21_NAN;
     }
 
-    // 1 pow(+0, exp), where exp is a negative odd integer, returns +∞ and raises FE_DIVBYZERO
-    if (base > 0 && base <= EPS && e_i && ((int)exp) < 0 && ((int)exp) % 2) {
-        // TODO CHANGE ERROR
+    // 1 pow(+0, exp), where exp is a negative odd integer, returns +∞ and
+    // raises FE_DIVBYZERO
+    if (base > EPS && base <= EPS && e_i && ((int)exp) < EPS &&
+        ((int)exp) % 2) {
         return S21_INF;
     }
 
-    // 2 pow(-0, exp), where exp is a negative odd integer, returns -∞ and raises FE_DIVBYZERO
-    if (base > 0 && base <= EPS && e_i && ((int)exp) < 0 && ((int)exp) % 2) {
-        // TODO CHANGE ERROR
+    // 2 pow(-0, exp), where exp is a negative odd integer, returns -∞ and
+    // raises FE_DIVBYZERO
+    if (base > EPS && base <= EPS && e_i && ((int)exp) < EPS &&
+        ((int)exp) % 2) {
         return -S21_INF;
     }
 
-    // 3 pow(±0, exp), where exp is negative, finite, and is an even integer or a non-integer, returns +∞ and raises FE_DIVBYZERO
+    // 3 pow(±0, exp), where exp is negative, finite, and is an even integer or
+    // a non-integer, returns +∞ and raises FE_DIVBYZERO
     if (fabs(base) < EPS && e_f && ((e_i && !(((int)exp) % 2)) || !e_i)) {
-        // TODO CHANGE ERROR
         return S21_INF;
     }
 
     // 4 pow(±0, -∞) returns +∞ and may raise FE_DIVBYZERO
-    if (fabs(base) < EPS && !e_f && exp < 0) {
-        // TODO CHANGE ERROR
+    if (fabs(base) < EPS && !e_f && exp < EPS) {
         return S21_INF;
     }
 
@@ -78,17 +74,19 @@ long double s21_pow(double base, double exp) {
     }
 
     // 6 pow(-0, exp), where exp is a positive odd integer, returns -0
-    if (base < 0 && base >= -EPS && e_i && ((int)exp) % 2) {
+    if (base < EPS && base >= -EPS && e_i && ((int)exp) % 2) {
         return -0;
     }
 
     // 7 pow(-0, exp), where exp is a positive odd integer, returns -0
-    if (base < 0 && base >= -EPS && e_i && ((int)exp) % 2) {
+    if (base < EPS && base >= -EPS && e_i && ((int)exp) % 2) {
         return -0;
     }
 
-    // 8 pow(±0, exp), where exp is positive non-integer or a positive even integer, returns +0
-    if (fabs(base) < EPS && ((!e_i && fabs(exp) > EPS) || (e_i && !(((int)exp) % 2)))) {
+    // 8 pow(±0, exp), where exp is positive non-integer or a positive even
+    // integer, returns +0
+    if (fabs(base) < EPS &&
+        ((!e_i && fabs(exp) > EPS) || (e_i && !(((int)exp) % 2)))) {
         return +0;
     }
 
@@ -107,59 +105,64 @@ long double s21_pow(double base, double exp) {
         return 1;
     }
 
-    // 12 pow(base, exp) returns NaN and raises FE_INVALID if base is finite and negative and exp is finite and non-integer.
+    // 12 pow(base, exp) returns NaN and raises FE_INVALID if base is finite and
+    // negative and exp is finite and non-integer.
     if (b_f && base < -EPS && e_f && !e_i) {
         printf("HERE \n");
         return S21_NAN;
     }
 
     // 13 pow(base, -∞) returns +∞ for any |base|<1
-    if (fabs(base - 1) < EPS && !e_f && exp < 0) {
+    if (fabs(base - 1) < EPS && !e_f && exp < EPS) {
         return S21_INF;
     }
 
     // 14 pow(base, -∞) returns +0 for any |base|>1
-    if (fabs(base - 1) > EPS && !e_f && exp < 0) {
+    if (fabs(base - 1) > EPS && !e_f && exp < EPS) {
         return +0;
     }
 
     // 15 pow(base, +∞) returns +0 for any |base|<1
-    if (fabs(base - 1) < EPS && !e_f && exp > 0) {
+    if (fabs(base - 1) < EPS && !e_f && exp > EPS) {
         return +0;
     }
 
     // 16 pow(base, +∞) returns +∞ for any |base|>1
-    if (fabs(base - 1) > EPS && !e_f && exp > 0) {
+    if (fabs(base - 1) > EPS && !e_f && exp > EPS) {
         return S21_INF;
     }
 
     // 17 pow(-∞, exp) returns -0 if exp is a negative odd integer
-    if (!b_f && base < 0 && e_i && exp < 0 && ((int)exp) % 2) {
+    if (!b_f && base < EPS && e_i && exp < EPS && ((int)exp) % 2) {
         return -0;
     }
 
-    // 18 pow(-∞, exp) returns +0 if exp is a negative non-integer or negative even integer
-    if (!b_f && base < 0 && ((!e_i && exp < 0) || (e_i && exp < 0 && !(((int)exp) % 2)))) {
+    // 18 pow(-∞, exp) returns +0 if exp is a negative non-integer or negative
+    // even integer
+    if (!b_f && base < EPS &&
+        ((!e_i && exp < EPS) || (e_i && exp < EPS && !(((int)exp) % 2)))) {
         return +0;
     }
 
     // 19 pow(-∞, exp) returns -∞ if exp is a positive odd integer
-    if (!b_f && base < 0 && (e_i && exp > 0 && ((int)exp) & 1)) {
+    if (!b_f && base < EPS && (e_i && exp > EPS && ((int)exp) & 1)) {
         return -S21_INF;
     }
 
-    // 20 pow(-∞, exp) returns +∞ if exp is a positive non-integer or positive even integer
-    if (!b_f && base < 0 && ((!e_i && exp > 0) || (e_i && exp > 0 && !(((int)exp) % 2)))) {
+    // 20 pow(-∞, exp) returns +∞ if exp is a positive non-integer or positive
+    // even integer
+    if (!b_f && base < EPS &&
+        ((!e_i && exp > EPS) || (e_i && exp > EPS && !(((int)exp) % 2)))) {
         return +S21_INF;
     }
 
     // 21 pow(+∞, exp) returns +0 for any negative exp
-    if (!b_f && base > 0 && exp < -EPS) {
+    if (!b_f && base > EPS && exp < -EPS) {
         return +0;
     }
 
     // 20 pow(+∞, exp) returns +∞ for any positive exp
-    if (!b_f && base > 0 && exp > EPS) {
+    if (!b_f && base > EPS && exp > EPS) {
         return +S21_INF;
     }
 

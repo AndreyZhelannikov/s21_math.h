@@ -1,8 +1,10 @@
 #include "s21_math.h"
 
-// If a domain error occurs, an implementation-defined value is returned (NaN where supported)
+// If a domain error occurs, an implementation-defined value is returned (NaN
+// where supported)
 
-// If a range error occurs due to underflow, the correct result (after rounding) is returned.
+// If a range error occurs due to underflow, the correct result (after rounding)
+// is returned.
 
 // Error handling
 // Errors are reported as specified in math_errhandling
@@ -24,13 +26,14 @@ long double s21_sqrt(double n) {
 
     // TODO Replace the comparison of doubles
     // TODO Implement the "is normal" function
-    if (n > 0.0 && isnormal(n)) {
+    if (n > EPS && is_normal(n)) {
         while (1) {
             root = 0.5 * (x + (n / x));
 
             // TODO Replace to constant
-            // TODO Replace fabsl to s21_fabs or implement the "s21_fabls" function
-            if (fabsl(root - x) < 1e-12)
+            // TODO Replace s21_fabs to s21_fabs or implement the "s21_fabls"
+            // function
+            if (s21_fabs(root - x) < 1e-12)
                 break;
 
             x = root;
@@ -40,10 +43,10 @@ long double s21_sqrt(double n) {
     }
 
     // TODO Replace the comparison of doubles
-    if (n == 0.0)
+    if (n < EPS && n > -EPS)
         return 0.0;
 
-    return (n > 0) ? handle_special_cases(n, root) : S21_NAN;
+    return (n > EPS) ? handle_special_cases(n, root) : S21_NAN;
 }
 
 static long double handle_special_cases(double n, long double root) {

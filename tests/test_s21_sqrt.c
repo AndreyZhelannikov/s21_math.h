@@ -4,10 +4,9 @@ START_TEST(sqrt_test_1) {
     double x = RandomReal(10e-16, 10e+16);
 
     if (x < 0) {
-#pragma GCC warning "Comment this out of the production build!"
         /* CPPLINT doesn't allow this! */
         ck_assert_ldouble_nan(s21_sqrt(x));
-        ck_assert_ldouble_nan(sqrt(x));
+        // ck_assert_ldouble_nan(sqrt(x));
     } else {
         ck_assert_ldouble_eq_tol(s21_sqrt(x), sqrtl(x), 1e-06);
     }
@@ -18,10 +17,9 @@ START_TEST(sqrt_test_2) {
     double x = RandomReal(-10, 10);
 
     if (x < 0) {
-#pragma GCC warning "Comment this out of the production build!"
         /* CPPLINT doesn't allow this! */
         ck_assert_ldouble_nan(s21_sqrt(x));
-        ck_assert_ldouble_nan(sqrt(x));
+        // ck_assert_ldouble_nan(sqrt(x));
     } else {
         ck_assert_ldouble_eq_tol(s21_sqrt(x), sqrtl(x), 1e-06);
     }
@@ -58,8 +56,11 @@ START_TEST(sqrt_test_6_large) {
 }
 END_TEST
 
+START_TEST(negative) { ck_assert_ldouble_nan(s21_sqrt(-314.1341)); }
+END_TEST
+
 Suite *suite_s21_sqrt(void) {
-    Suite *s = suite_create("suite_s21_sqrt");
+    Suite *s = suite_create("s21_sqrt");
     TCase *tc = tcase_create("s21_sqrt_tc");
 
     tcase_add_loop_test(tc, sqrt_test_1, 0, 10000);
@@ -69,6 +70,7 @@ Suite *suite_s21_sqrt(void) {
     tcase_add_test(tc, sqrt_test_4_one);
     tcase_add_test(tc, sqrt_test_5_zero);
     tcase_add_test(tc, sqrt_test_6_large);
+    tcase_add_test(tc, negative);
 
     suite_add_tcase(s, tc);
     return s;

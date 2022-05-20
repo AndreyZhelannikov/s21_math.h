@@ -43,7 +43,8 @@ void run_tests(void) {
         NULL,
     };
 
-    for (Suite **current_testcase = list_cases; *current_testcase; current_testcase++) {
+    for (Suite **current_testcase = list_cases; *current_testcase;
+         current_testcase++) {
         run_testcase(*current_testcase);
     }
 }
