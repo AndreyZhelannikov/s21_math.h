@@ -41,8 +41,7 @@ END_TEST
 START_TEST(zero_inf) {
     long double base = -0;
     long double exp = S21_INF;
-    ck_assert_ldouble_infinite(s21_pow(base, exp));
-    ck_assert_ldouble_infinite(pow(base, exp));
+    ck_assert_ldouble_eq_tol(s21_pow(base, exp), pow(base, exp), EPS);
 }
 END_TEST
 
@@ -77,7 +76,8 @@ END_TEST
 START_TEST(minus_one_nan) {
     long double base = -1;
     long double exp = S21_NAN;
-    ck_assert_ldouble_eq_tol(s21_pow(base, exp), pow(base, exp), 1e-6);
+    ck_assert_double_nan(pow(base, exp));
+    ck_assert_double_nan(s21_pow(base, exp));
 }
 END_TEST
 
@@ -99,8 +99,8 @@ END_TEST
 START_TEST(less_than_one_minus_inf) {
     long double base = 0.5591951;
     long double exp = -S21_INF;
-    ck_assert_ldouble_infinite(s21_pow(base, exp));
     ck_assert_ldouble_infinite(pow(base, exp));
+    ck_assert_ldouble_infinite(s21_pow(base, exp));
 }
 END_TEST
 
