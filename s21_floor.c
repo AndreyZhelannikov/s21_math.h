@@ -9,8 +9,7 @@ long double s21_floor(double x) {
 
     long long val = x;
 
-    // TODO double == int -> fix compare
-    if (x != val && s21_fabs(val) > EPS)
+    if (s21_fabs(x - val) > EPS && s21_fabs(val) > EPS)
         val -= 1;
 
     return val;
